@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from generator_problem import GeneratorProblem
 import random
 
@@ -34,7 +34,7 @@ class Solve:
 
         self.instance.solution_checker(assigned_generators, opened_generators)
         total_cost = self.instance.get_solution_cost(assigned_generators, opened_generators)
-        self.instance.plot_solution(assigned_generators, opened_generators)
+        self.instance.plot_solution(assigned_generators, opened_generators, "naive")
 
         print("[ASSIGNED-GENERATOR]", assigned_generators)
         print("[OPENED-GENERATOR]", opened_generators)
@@ -50,65 +50,52 @@ class Solve:
     def solve_localSearch(self):
         print("Solve with a local search algorithm")
 
-        opened_generators = [1 for _ in range(self.n_generator)]
+        opened_generators = [0 for _ in range(self.n_generator)]
         generators = list(range(0, self.n_generator))
         assigned_generators = [None for _ in range(self.n_device)]
         max_distance = 0 #distance maximale dans la solution
-        distances = {}
+        costs = {}
         #solution initiale
         for i in range(self.n_device):
             assigned_generators[i] = random.randint(0, self.n_generator-1)
-            # for j in range(self.n_generator):
-            #     distance_ij = self.getDistance(i,j)
-            #     if distance_ij > max_distance :
-            #         max_distance = distance_ij
-            #         max_dij = (i, j)
 
         for i in range(len(assigned_generators)) :
             j = assigned_generators[i]
-            distances[(i, j)] = self.getDistance(i,j)
+            costs[(i, j)] = self.getDistance(i,j) + self.instance.opening_cost[j]
 
-        max_distance = max(distances, key=distances.get)
+        max_distance = max(costs, key=costs.get)
 
         for i in range(self.n_device):
-            print(distances)
-            print(max_distance)
-            neighbors = generators.copy()
+            # print(distances)
+            # print(max_distance)
+            neighbors = list(generators)
             neighbors.pop(max_distance[1])
             tempNeighbor = 0
             isSmaller = 0
-            closestDistance = distances[max_distance]
+            closestDistance = costs[max_distance]
             for j in neighbors:
                 if closestDistance > self.getDistance(max_distance[0], j):
                     tempNeighbor = j
                     closestDistance = self.getDistance(max_distance[0],j)
                     isSmaller = 1
 
-            print(tempNeighbor)
+            # print(tempNeighbor)
             if isSmaller:
                 assigned_generators[max_distance[0]] = tempNeighbor
-            distances.pop(max_distance)
+            costs.pop(max_distance)
             #distances[(max_distance[0], tempNeighbor)] = closestDistance
-            if (len(distances) == 0):
+            if (len(costs) == 0):
                 break
-            max_distance = max(distances, key=distances.get)
+            max_distance = max(costs, key=costs.get)
 
-        # for i in range(self.n_device):
-        #     neighbors = generators.copy()
-        #     neighbors.pop(max_dij[1])
-            
-        #     for j in range(neighbors):
-        #         if max_distance > self.getDistance(max_dij[0],j):
-        #             assigned_generators[max_dij[0]] = j
-        #             break
-            
-        
-            # {(machine 1, generateur 1): distance + cout, }
-             
+        #allume les generateurs connectés
+        for i in range(len(assigned_generators)):
+            opened_generators[assigned_generators[i]] = 1
+
         
         self.instance.solution_checker(assigned_generators, opened_generators)
         total_cost = self.instance.get_solution_cost(assigned_generators, opened_generators)
-        self.instance.plot_solution(assigned_generators, opened_generators)
+        self.instance.plot_solution(assigned_generators, opened_generators, "local_search")
 
         print("[ASSIGNED-GENERATOR]", assigned_generators)
         print("[OPENED-GENERATOR]", opened_generators)
