@@ -28,4 +28,5 @@ if __name__ == '__main__':
 
     solveur = Solve(args.n_generator, args.n_device, args.seed)
 
+    # solveur.solve_localSearch()
     solveur.solve_naive()

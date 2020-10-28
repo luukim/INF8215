@@ -37,6 +37,7 @@ class GeneratorProblem:
         :param assigned_generators: list where the element at index $i$ correspond to the generator associated to device $i$
         :param opened_generators: list where the element at index $i$ is a boolean stating if the generator $i$ is opened
         '''
+        print(self.opening_cost)
 
         assert len(assigned_generators) == self.n_device
         assert len(opened_generators) == self.n_generator
@@ -47,7 +48,7 @@ class GeneratorProblem:
 
         for i in range(self.n_device):
             generator_coord = self.generator_coordinates[assigned_generators[i]]
-            device_coord = self.device_coordinates[i]
+            device_coord = self.device_coordinates[i] 
             total_distance_cost += self.get_distance(device_coord[0], device_coord[1], generator_coord[0], generator_coord[1])
 
         return total_distance_cost + total_opening_cost
