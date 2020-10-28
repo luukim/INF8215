@@ -53,7 +53,7 @@ class GeneratorProblem:
 
         return total_distance_cost + total_opening_cost
 
-    def plot_solution(self, assigned_generators, opened_generators):
+    def plot_solution(self, assigned_generators, opened_generators, algo):
         '''
         :param assigned_generators: list where the element at index $i$ correspond to the generator associated to device $i$
         :param opened_generators: list where the element at index $i$ is a boolean stating if the generator $i$ is opened
@@ -104,7 +104,7 @@ class GeneratorProblem:
         plt.plot(x_gen_closed, y_gen_closed, "co", color="r", markersize=10, marker="^")
 
 
-        plt.savefig("solution1.png")
+        plt.savefig("solution" + algo + ".png")
 
     @staticmethod
     def generate_random_instance(n_generator, n_device, seed):

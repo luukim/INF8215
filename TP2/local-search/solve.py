@@ -34,7 +34,7 @@ class Solve:
 
         self.instance.solution_checker(assigned_generators, opened_generators)
         total_cost = self.instance.get_solution_cost(assigned_generators, opened_generators)
-        self.instance.plot_solution(assigned_generators, opened_generators)
+        self.instance.plot_solution(assigned_generators, opened_generators, "naive")
 
         print("[ASSIGNED-GENERATOR]", assigned_generators)
         print("[OPENED-GENERATOR]", opened_generators)
@@ -73,7 +73,7 @@ class Solve:
         for i in range(self.n_device):
             print(distances)
             print(max_distance)
-            neighbors = generators.copy()
+            neighbors = list(generators)
             neighbors.pop(max_distance[1])
             tempNeighbor = 0
             isSmaller = 0
@@ -108,7 +108,7 @@ class Solve:
         
         self.instance.solution_checker(assigned_generators, opened_generators)
         total_cost = self.instance.get_solution_cost(assigned_generators, opened_generators)
-        self.instance.plot_solution(assigned_generators, opened_generators)
+        self.instance.plot_solution(assigned_generators, opened_generators, "local_search")
 
         print("[ASSIGNED-GENERATOR]", assigned_generators)
         print("[OPENED-GENERATOR]", opened_generators)
