@@ -70,7 +70,25 @@ class Solve:
 
         max_distance = max(distances, key=distances.get)
 
-        print(max_distance)
+        for i in range(self.n_device):
+            print(distances)
+            print(max_distance)
+            neighbors = generators.copy()
+            neighbors.pop(max_distance[1])
+            tempNeighbor = 0
+            closestDistance = distances[max_distance]
+            for j in neighbors:
+                if closestDistance > self.getDistance(max_distance[0], j):
+                    tempNeighbor = j
+                    closestDistance = self.getDistance(max_distance[0],j)
+
+            print(tempNeighbor)    
+            assigned_generators[max_distance[0]] = tempNeighbor
+            distances.pop(max_distance)
+            #distances[(max_distance[0], tempNeighbor)] = closestDistance
+            if (len(distances) == 0):
+                break
+            max_distance = max(distances, key=distances.get)
 
         # for i in range(self.n_device):
         #     neighbors = generators.copy()
@@ -92,13 +110,6 @@ class Solve:
         print("[ASSIGNED-GENERATOR]", assigned_generators)
         print("[OPENED-GENERATOR]", opened_generators)
         print("[SOLUTION-COST]", total_cost)
-
-
-
-
-
-
-
 
 
 
