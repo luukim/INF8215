@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from generator_problem import GeneratorProblem
 import random
 
@@ -54,16 +54,16 @@ class Solve:
         generators = list(range(0, self.n_generator))
         assigned_generators = [None for _ in range(self.n_device)]
         max_distance = 0 #distance maximale dans la solution
-        distances = {}
+        costs = {}
         #solution initiale
         for i in range(self.n_device):
             assigned_generators[i] = random.randint(0, self.n_generator-1)
 
         for i in range(len(assigned_generators)) :
             j = assigned_generators[i]
-            distances[(i, j)] = self.getDistance(i,j)
+            costs[(i, j)] = self.getDistance(i,j) + self.instance.opening_cost[j]
 
-        max_distance = max(distances, key=distances.get)
+        max_distance = max(costs, key=costs.get)
 
         for i in range(self.n_device):
             # print(distances)
@@ -72,7 +72,7 @@ class Solve:
             neighbors.pop(max_distance[1])
             tempNeighbor = 0
             isSmaller = 0
-            closestDistance = distances[max_distance]
+            closestDistance = costs[max_distance]
             for j in neighbors:
                 if closestDistance > self.getDistance(max_distance[0], j):
                     tempNeighbor = j
@@ -82,12 +82,13 @@ class Solve:
             # print(tempNeighbor)
             if isSmaller:
                 assigned_generators[max_distance[0]] = tempNeighbor
-            distances.pop(max_distance)
+            costs.pop(max_distance)
             #distances[(max_distance[0], tempNeighbor)] = closestDistance
-            if (len(distances) == 0):
+            if (len(costs) == 0):
                 break
-            max_distance = max(distances, key=distances.get)
+            max_distance = max(costs, key=costs.get)
 
+        #allume les generateurs connectés
         for i in range(len(assigned_generators)):
             opened_generators[assigned_generators[i]] = 1
 
