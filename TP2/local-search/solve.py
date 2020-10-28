@@ -76,14 +76,17 @@ class Solve:
             neighbors = generators.copy()
             neighbors.pop(max_distance[1])
             tempNeighbor = 0
+            isSmaller = 0
             closestDistance = distances[max_distance]
             for j in neighbors:
                 if closestDistance > self.getDistance(max_distance[0], j):
                     tempNeighbor = j
                     closestDistance = self.getDistance(max_distance[0],j)
+                    isSmaller = 1
 
-            print(tempNeighbor)    
-            assigned_generators[max_distance[0]] = tempNeighbor
+            print(tempNeighbor)
+            if isSmaller:
+                assigned_generators[max_distance[0]] = tempNeighbor
             distances.pop(max_distance)
             #distances[(max_distance[0], tempNeighbor)] = closestDistance
             if (len(distances) == 0):

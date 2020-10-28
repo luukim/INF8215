@@ -104,7 +104,7 @@ class GeneratorProblem:
         plt.plot(x_gen_closed, y_gen_closed, "co", color="r", markersize=10, marker="^")
 
 
-        plt.savefig("solution.png")
+        plt.savefig("solution1.png")
 
     @staticmethod
     def generate_random_instance(n_generator, n_device, seed):
