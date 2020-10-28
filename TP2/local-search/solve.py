@@ -87,9 +87,11 @@ class Solve:
                     opened_generators[j] = 1
                     solution_cost = new_cost
                     assigned_generators[device_generator[0]] = j
+                    print(solution_cost)
 
             if not foundNewSolution :
                 assigned_generators[device_generator[0]] = device_generator[1]
+                opened_generators[device_generator[1]] = 1
 
         self.instance.solution_checker(assigned_generators, opened_generators)
         total_cost = self.instance.get_solution_cost(assigned_generators, opened_generators)
