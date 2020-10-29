@@ -50,6 +50,8 @@ class Solve:
 
     def solve_localSearch(self):
         print("Solve with a local search algorithm")
+        visited_solutions = []
+
         opened_generators = [0 for _ in range(self.n_generator)]
         generators = list(range(0, self.n_generator))
         assigned_generators = [None for _ in range(self.n_device)]
@@ -65,7 +67,6 @@ class Solve:
                 costs[(i, j)] += self.instance.opening_cost[j]
                 opened_generators[j] = 1
         solution_cost = self.instance.get_solution_cost(assigned_generators, opened_generators)
-        print(solution_cost)
         for device_generator in costs:
             neighbors = list(generators) #liste des voisins possibles
             neighbors.pop(device_generator[1]) #on retire le voisin (generateur) dont le coût est le plus grand
@@ -84,11 +85,13 @@ class Solve:
                     new_cost = cost + self.getDistance(device_generator[0],j)
                 if new_cost < solution_cost:
                     foundNewSolution = True
+                    if not opened_generators[j]:
+                        device_generator = self.getDistance(device_generator[0],j) + self.instance.opening_cost[j]
+                    else : 
+                        device_generator = self.getDistance(device_generator[0],j)
                     opened_generators[j] = 1
                     solution_cost = new_cost
                     assigned_generators[device_generator[0]] = j
-                    print(solution_cost)
-
             if not foundNewSolution :
                 assigned_generators[device_generator[0]] = device_generator[1]
                 opened_generators[device_generator[1]] = 1

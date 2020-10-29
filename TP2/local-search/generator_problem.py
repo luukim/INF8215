@@ -37,7 +37,7 @@ class GeneratorProblem:
         :param assigned_generators: list where the element at index $i$ correspond to the generator associated to device $i$
         :param opened_generators: list where the element at index $i$ is a boolean stating if the generator $i$ is opened
         '''
-        print(self.opening_cost)
+        # print(self.opening_cost)
 
         assert len(assigned_generators) == self.n_device
         assert len(opened_generators) == self.n_generator
