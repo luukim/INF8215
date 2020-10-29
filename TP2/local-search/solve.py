@@ -50,7 +50,7 @@ class Solve:
     def solve_localSearch(self):
         print("Solve with a local search algorithm")
 
-        opened_generators = [1 for _ in range(self.n_generator)]
+        opened_generators = [0 for _ in range(self.n_generator)]
         generators = list(range(0, self.n_generator))
         assigned_generators = [None for _ in range(self.n_device)]
         max_distance = 0 #distance maximale dans la solution
@@ -66,7 +66,9 @@ class Solve:
 
         for i in range(len(assigned_generators)) :
             j = assigned_generators[i]
-            distances[(i, j)] = self.getDistance(i,j)
+            distances[(i, j)] = self.getDistance(i,j) + self.instance.opening_cost[j]
+            if not opened_generators[j]:
+                opened_generators[j] = 1
 
         max_distance = max(distances, key=distances.get)
 
@@ -79,14 +81,18 @@ class Solve:
             isSmaller = 0
             closestDistance = distances[max_distance]
             for j in neighbors:
-                if closestDistance > self.getDistance(max_distance[0], j):
+                if closestDistance > self.getDistance(max_distance[0], j) + self.instance.opening_cost[j]:
                     tempNeighbor = j
-                    closestDistance = self.getDistance(max_distance[0],j)
+                    closestDistance = self.getDistance(max_distance[0],j) + self.instance.opening_cost[j]
                     isSmaller = 1
 
             print(tempNeighbor)
             if isSmaller:
                 assigned_generators[max_distance[0]] = tempNeighbor
+                if max_distance[1] not in assigned_generators:
+                    opened_generators[max_distance[1]] = 0
+                if not opened_generators[tempNeighbor]:
+                    opened_generators[tempNeighbor] = 1
             distances.pop(max_distance)
             #distances[(max_distance[0], tempNeighbor)] = closestDistance
             if (len(distances) == 0):
