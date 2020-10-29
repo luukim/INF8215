@@ -86,9 +86,9 @@ class Solve:
                 if new_cost < solution_cost:
                     foundNewSolution = True
                     if not opened_generators[j]:
-                        device_generator = self.getDistance(device_generator[0],j) + self.instance.opening_cost[j]
+                        costs[device_generator] = self.getDistance(device_generator[0],j) + self.instance.opening_cost[j]
                     else : 
-                        device_generator = self.getDistance(device_generator[0],j)
+                        costs[device_generator] = self.getDistance(device_generator[0],j)
                     opened_generators[j] = 1
                     solution_cost = new_cost
                     assigned_generators[device_generator[0]] = j
