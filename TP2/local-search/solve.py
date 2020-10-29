@@ -52,24 +52,25 @@ class Solve:
         best_solution = assigned_generators, opened_generators
         solutions_found[self.instance.get_solution_cost(best_solution[0], best_solution[1])] = best_solution
         print("initial solution", self.instance.get_solution_cost(best_solution[0], best_solution[1]))
+        banned_generators = []
         #voisins possibles        
-        for i in range(self.n_device):
-            neighbors = self.getNeighbors(assigned_generators, opened_generators)
-            #print(neighbors)
-            # maxOpeningCost = max(self.instance.opening_cost)
-            # print("maxOpeningCost ",maxOpeningCost)
-            # generator = self.instance.opening_cost.index(maxOpeningCost)
-            # print("Generator ",generator)
-            # print("assigned generators ", assigned_generators)
-            # countGenerator = assigned_generators.count(generator)
-            # if countGenerator == 0:
+        for i in range(self.n_device*5):
+            neighbors = self.getNeighbors(assigned_generators, opened_generators, banned_generators)
+            countGenerator = 0
+            index = 1
+            while countGenerator == 0:
+                maxOpeningCost = sorted(self.instance.opening_cost)[-index]
+                generator = self.instance.opening_cost.index(maxOpeningCost)
+                countGenerator = assigned_generators.count(generator)
+                if countGenerator:
+                    banned_generators.append(generator)
+                index += 1
 
-            # print("countGenerator ", countGenerator)
-            # selected_neighbors = self.selectNeighbors(neighbors, generator, countGenerator)
-            # print(selected_neighbors)
-            best_neighbor = min(selected_neighbors, key=float)
-            if self.instance.get_solution_cost(best_solution[0], best_solution[1]) > best_neighbor :
-                best_solution = neighbors[best_neighbor]
+            selected_neighbors = self.selectNeighbors(neighbors, generator, countGenerator)
+            if selected_neighbors:
+                best_neighbor_cost = min(selected_neighbors, key=float)
+                best_neighbor = selected_neighbors[best_neighbor_cost]
+                best_solution = best_neighbor[0], best_neighbor[1]
                 assigned_generators = best_solution[0]
                 opened_generators = best_solution[1]
             print(self.instance.get_solution_cost(best_solution[0], best_solution[1]))
@@ -77,21 +78,22 @@ class Solve:
         self.printSolution(assigned_generators, opened_generators)
     
     def selectNeighbors(self, neighbors, generator, countGenerator):
+        #print("generator ", generator)
         bestNeighbors = {}
         for key in neighbors:
-            print(neighbors[key])
             if neighbors[key][0].count(generator) < countGenerator:
-                bestNeighbors[key] = neighbors[key]
+                bestNeighbors[self.instance.opening_cost[generator]] = neighbors[key]
+        #print(bestNeighbors)
         return bestNeighbors
 
-    def getNeighbors(self, assigned_generators, opened_generators) :
+    def getNeighbors(self, assigned_generators, opened_generators, banned_generators) :
         neighbors = {}
         for i in range(self.n_device) :
 
             for j in range(self.n_generator) :
                 opened_generators_temp = list(opened_generators)
                 assigned_generators_temp = list(assigned_generators)
-                if assigned_generators[i] != j :
+                if assigned_generators[i] != j and j not in banned_generators :
                     oldGenerator = assigned_generators_temp[i]
                     assigned_generators_temp[i] = j
                     opened_generators_temp[j] = 1
