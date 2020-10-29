@@ -66,41 +66,37 @@ class Solve:
                     new_solution = assigned_generators_temp, opened_generators_temp
                 neighbors[self.instance.get_solution_cost(new_solution[0], new_solution[1])] = new_solution
 
+        print(neighbors)
+        best_neighbor = min(neighbors, key=float)
+        if best_solution > best_neighbor :
+            best_solution = best_neighbor
+        # zone1 = {}
+        # zone2 = {}
+        # zone3 = {}
+        # zone4 = {}
 
+        # for generator in generators :
+        #     zone = self.getZone(generator, 1)
+        #     if zone == 1 :
+        #         zone1[generator] = self.instance.opening_cost[generator]
+        #     elif zone == 2 :
+        #         zone2[generator] = self.instance.opening_cost[generator]
+        #     elif zone == 3 :
+        #         zone3[generator] = self.instance.opening_cost[generator]
+        #     elif zone == 4 :
+        #         zone4[generator] = self.instance.opening_cost[generator]
 
+        # costs[1] = zone1
+        # costs[2] = zone2
+        # costs[3] = zone3
+        # costs[4] = zone4
 
-                
-
-
-
-
-        zone1 = {}
-        zone2 = {}
-        zone3 = {}
-        zone4 = {}
-
-        for generator in generators :
-            zone = self.getZone(generator, 1)
-            if zone == 1 :
-                zone1[generator] = self.instance.opening_cost[generator]
-            elif zone == 2 :
-                zone2[generator] = self.instance.opening_cost[generator]
-            elif zone == 3 :
-                zone3[generator] = self.instance.opening_cost[generator]
-            elif zone == 4 :
-                zone4[generator] = self.instance.opening_cost[generator]
-
-        costs[1] = zone1
-        costs[2] = zone2
-        costs[3] = zone3
-        costs[4] = zone4
-
-        for i in range(self.n_device):
-            zone = self.getZone(i,2)
-            min_cost_gen = min(costs[zone], key=costs[zone].get)
-            opened_generators[assigned_generators[i]] = 0
-            assigned_generators[i] = min_cost_gen
-            opened_generators[min_cost_gen] = 1
+        # for i in range(self.n_device):
+        #     zone = self.getZone(i,2)
+        #     min_cost_gen = min(costs[zone], key=costs[zone].get)
+        #     opened_generators[assigned_generators[i]] = 0
+        #     assigned_generators[i] = min_cost_gen
+        #     opened_generators[min_cost_gen] = 1
         
         self.printSolution(assigned_generators, opened_generators)
 
