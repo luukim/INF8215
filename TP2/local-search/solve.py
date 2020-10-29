@@ -41,6 +41,20 @@ class Solve:
         assigned_generators = [None for _ in range(self.n_device)]
         costs = {}
         #solution initiale
+        for i in range(self.n_device):
+            assigned_generators[i] = random.randint(0, self.n_generator-1)
+
+        for i in range(len(assigned_generators)) :
+            j = assigned_generators[i]
+            opened_generators[j] = 1
+
+        solutions_found = {} #pour stocker toutes les solutions trouvées et retourner à une meilleure précédente si nécessaire
+        best_solution = assigned_generators, opened_generators
+        solutions_found[1] = best_solution
+
+        #t = t0
+        t = 10
+
         zone1 = {}
         zone2 = {}
         zone3 = {}
@@ -65,59 +79,11 @@ class Solve:
         for i in range(self.n_device):
             zone = self.getZone(i,2)
             min_cost_gen = min(costs[zone], key=costs[zone].get)
+            opened_generators[assigned_generators[i]] = 0
             assigned_generators[i] = min_cost_gen
             opened_generators[min_cost_gen] = 1
-
-        solutions_found = {} #pour stocker toutes les solutions trouvées et retourner à une meilleure précédente si nécessaire
-        best_solution = assigned_generators, opened_generators
-        solutions_found[1] = best_solution
-
-        #t = t0
-        t = 10
-
         
-            
 
-        # g = random.randint(0, self.n_generator-1)
-        # for i in range(self.n_device):
-        #     assigned_generators[i] = 
-
-
-
-
-        # for device_generator in costs:
-        #     neighbors = list(generators) #liste des voisins possibles
-        #     neighbors.pop(device_generator[1]) #on retire le voisin (generateur) dont le coût est le plus grand
-        #     cost = 0
-        #     assigned_generators[device_generator[0]] = -1
-        #     if device_generator[1] not in assigned_generators :
-        #         cost = solution_cost - self.getDistance(device_generator[0],device_generator[1]) - self.instance.opening_cost[device_generator[1]]
-        #         opened_generators[device_generator[1]] = 0
-        #     else :
-        #         cost = solution_cost - self.getDistance(device_generator[0],device_generator[1])
-        #     foundNewSolution = False
-        #     for j in neighbors:
-        #         if j not in assigned_generators :
-        #             new_cost = cost + self.getDistance(device_generator[0],j) + self.instance.opening_cost[j]
-        #         else : 
-        #             new_cost = cost + self.getDistance(device_generator[0],j)
-        #         # print("new cost possible", new_cost)
-        #         if new_cost < solution_cost:
-                    
-        #             foundNewSolution = True
-        #             if not opened_generators[j]:
-        #                 costs[device_generator] = self.getDistance(device_generator[0],j) + self.instance.opening_cost[j]
-        #             else : 
-        #                 costs[device_generator] = self.getDistance(device_generator[0],j)
-        #             opened_generators[j] = 1
-        #             solution_cost = new_cost
-        #             # print("solution choisie", solution_cost)
-
-        #             assigned_generators[device_generator[0]] = j
-        #     if not foundNewSolution :
-        #         assigned_generators[device_generator[0]] = device_generator[1]
-        #         opened_generators[device_generator[1]] = 1
-            
 
         self.printSolution(assigned_generators, opened_generators)
 
