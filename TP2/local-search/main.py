@@ -7,8 +7,8 @@ def parse_arguments():
     parser = argparse.ArgumentParser()
 
     # Instances parameters
-    parser.add_argument('--n_generator', type=int, default=25)
-    parser.add_argument('--n_device', type=int, default=100)
+    parser.add_argument('--n_generator', type=int, default=5)
+    parser.add_argument('--n_device', type=int, default=6)
     parser.add_argument('--seed', type=int, default=1)
 
     return parser.parse_args()

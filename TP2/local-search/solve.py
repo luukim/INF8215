@@ -53,9 +53,21 @@ class Solve:
         solutions_found[self.instance.get_solution_cost(best_solution[0], best_solution[1])] = best_solution
         print("initial solution", self.instance.get_solution_cost(best_solution[0], best_solution[1]))
         #voisins possibles        
-        while self.instance.get_solution_cost(best_solution[0], best_solution[1]) > 4000 :
+        for i in range(self.n_device):
             neighbors = self.getNeighbors(assigned_generators, opened_generators)
-            best_neighbor = min(neighbors, key=float)
+            #print(neighbors)
+            # maxOpeningCost = max(self.instance.opening_cost)
+            # print("maxOpeningCost ",maxOpeningCost)
+            # generator = self.instance.opening_cost.index(maxOpeningCost)
+            # print("Generator ",generator)
+            # print("assigned generators ", assigned_generators)
+            # countGenerator = assigned_generators.count(generator)
+            # if countGenerator == 0:
+
+            # print("countGenerator ", countGenerator)
+            # selected_neighbors = self.selectNeighbors(neighbors, generator, countGenerator)
+            # print(selected_neighbors)
+            best_neighbor = min(selected_neighbors, key=float)
             if self.instance.get_solution_cost(best_solution[0], best_solution[1]) > best_neighbor :
                 best_solution = neighbors[best_neighbor]
                 assigned_generators = best_solution[0]
@@ -64,19 +76,29 @@ class Solve:
 
         self.printSolution(assigned_generators, opened_generators)
     
+    def selectNeighbors(self, neighbors, generator, countGenerator):
+        bestNeighbors = {}
+        for key in neighbors:
+            print(neighbors[key])
+            if neighbors[key][0].count(generator) < countGenerator:
+                bestNeighbors[key] = neighbors[key]
+        return bestNeighbors
+
     def getNeighbors(self, assigned_generators, opened_generators) :
         neighbors = {}
         for i in range(self.n_device) :
-            opened_generators_temp = list(opened_generators)
-            assigned_generators_temp = list(assigned_generators)
+
             for j in range(self.n_generator) :
+                opened_generators_temp = list(opened_generators)
+                assigned_generators_temp = list(assigned_generators)
                 if assigned_generators[i] != j :
+                    oldGenerator = assigned_generators_temp[i]
                     assigned_generators_temp[i] = j
                     opened_generators_temp[j] = 1
-                    if assigned_generators_temp[i] not in assigned_generators_temp :
-                        opened_generators_temp[j] = 0
+                    if oldGenerator not in assigned_generators_temp :
+                        opened_generators_temp[oldGenerator] = 0
                     new_solution = assigned_generators_temp, opened_generators_temp
-                neighbors[self.instance.get_solution_cost(new_solution[0], new_solution[1])] = new_solution
+                    neighbors[self.instance.get_solution_cost(new_solution[0], new_solution[1])] = new_solution
         return neighbors
 
 
