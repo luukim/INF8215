@@ -36,8 +36,8 @@ class Solve:
 
     def solve_localSearch(self):
         print("Solve with a local search algorithm")
-        opened_generators = [0 for _ in range(self.n_generator)]
         generators = list(range(0, self.n_generator))
+        opened_generators = [0 for _ in range(self.n_generator)]
         assigned_generators = [None for _ in range(self.n_device)]
         costs = {}
         #solution initiale
@@ -50,10 +50,25 @@ class Solve:
 
         solutions_found = {} #pour stocker toutes les solutions trouvées et retourner à une meilleure précédente si nécessaire
         best_solution = assigned_generators, opened_generators
-        solutions_found[1] = best_solution
+        solutions_found[self.instance.get_solution_cost(best_solution[0], best_solution[1])] = best_solution
 
-        #t = t0
-        t = 10
+        #voisins possibles
+        neighbors = {}
+        for i in range(self.n_device) :
+            opened_generators_temp = list(opened_generators)
+            assigned_generators_temp = list(assigned_generators)
+            for j in range(self.n_generator) :
+                if assigned_generators[i] != j :
+                    
+                    assigned_generators_temp[i] = j
+                    opened_generators_temp[j] = 1
+
+
+
+                
+
+
+
 
         zone1 = {}
         zone2 = {}
@@ -83,8 +98,6 @@ class Solve:
             assigned_generators[i] = min_cost_gen
             opened_generators[min_cost_gen] = 1
         
-
-
         self.printSolution(assigned_generators, opened_generators)
 
     def printSolution(self, assigned_generators, opened_generators) :
