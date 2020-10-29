@@ -59,9 +59,13 @@ class Solve:
             assigned_generators_temp = list(assigned_generators)
             for j in range(self.n_generator) :
                 if assigned_generators[i] != j :
-                    
                     assigned_generators_temp[i] = j
                     opened_generators_temp[j] = 1
+                    if assigned_generators_temp[i] not in assigned_generators_temp :
+                        opened_generators_temp[j] = 0
+                    new_solution = assigned_generators_temp, opened_generators_temp
+                neighbors[self.instance.get_solution_cost(new_solution[0], new_solution[1])] = new_solution
+
 
 
 
