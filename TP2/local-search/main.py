@@ -2,13 +2,14 @@
 
 from solve import Solve
 import argparse
+import time
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
 
     # Instances parameters
-    parser.add_argument('--n_generator', type=int, default=5)
-    parser.add_argument('--n_device', type=int, default=6)
+    parser.add_argument('--n_generator', type=int, default=25)
+    parser.add_argument('--n_device', type=int, default=100)
     parser.add_argument('--seed', type=int, default=1)
 
     return parser.parse_args()
@@ -27,5 +28,7 @@ if __name__ == '__main__':
 
     solveur = Solve(args.n_generator, args.n_device, args.seed)
     solveur.solve_naive()
+    start_time = time.time()
     solveur.solve_localSearch()
+    print("--- %s seconds ---" % (time.time() - start_time))
 

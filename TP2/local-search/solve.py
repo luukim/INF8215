@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from generator_problem import GeneratorProblem
 import random
+import math
 
 
 class Solve:
@@ -42,39 +43,53 @@ class Solve:
         costs = {}
         #solution initiale
         for i in range(self.n_device):
-            assigned_generators[i] = random.randint(0, self.n_generator-1)
+            closest_generator = min(range(self.n_generator),
+                                    key=lambda j: self.instance.get_distance(self.instance.device_coordinates[i][0],
+                                                                      self.instance.device_coordinates[i][1],
+                                                                      self.instance.generator_coordinates[j][0],
+                                                                      self.instance.generator_coordinates[j][1])              
+                                    )
 
+            assigned_generators[i] = closest_generator
+            
         for i in range(len(assigned_generators)) :
-            j = assigned_generators[i]
-            opened_generators[j] = 1
+            opened_generators[assigned_generators[i]] = 1
 
-        solutions_found = {} #pour stocker toutes les solutions trouvées et retourner à une meilleure précédente si nécessaire
+
+        # for i in range(self.n_device):
+        #     assigned_generators[i] = random.randint(0, self.n_generator-1)
+
+        # for i in range(len(assigned_generators)) :
+        #     j = assigned_generators[i]
+        #     opened_generators[j] = 1
+
         best_solution = assigned_generators, opened_generators
-        solutions_found[self.instance.get_solution_cost(best_solution[0], best_solution[1])] = best_solution
-        print("initial solution", self.instance.get_solution_cost(best_solution[0], best_solution[1]))
-        #voisins possibles        
-        for i in range(self.n_device):
-            neighbors = self.getNeighbors(assigned_generators, opened_generators)
-            #print(neighbors)
-            # maxOpeningCost = max(self.instance.opening_cost)
-            # print("maxOpeningCost ",maxOpeningCost)
-            # generator = self.instance.opening_cost.index(maxOpeningCost)
-            # print("Generator ",generator)
-            # print("assigned generators ", assigned_generators)
-            # countGenerator = assigned_generators.count(generator)
-            # if countGenerator == 0:
 
-            # print("countGenerator ", countGenerator)
-            # selected_neighbors = self.selectNeighbors(neighbors, generator, countGenerator)
-            # print(selected_neighbors)
-            best_neighbor = min(selected_neighbors, key=float)
-            if self.instance.get_solution_cost(best_solution[0], best_solution[1]) > best_neighbor :
-                best_solution = neighbors[best_neighbor]
+        initial_temp = 90
+        final_temp = .1
+        alpha = 0.01
+        current_temp = initial_temp
+        
+        while current_temp > final_temp :
+            neighbors = self.getNeighbors(assigned_generators, opened_generators)
+            best_neighbor = random.choice(list(neighbors.values()))
+            cost_diff = self.getCost(best_solution[0], best_solution[1]) - self.getCost(best_neighbor[0], best_neighbor[1])
+            if cost_diff > 0 :
+                best_solution = best_neighbor
                 assigned_generators = best_solution[0]
                 opened_generators = best_solution[1]
-            print(self.instance.get_solution_cost(best_solution[0], best_solution[1]))
+            else :
+                if random.uniform(0,1) < math.exp(cost_diff/current_temp):
+                    best_solution = best_neighbor
+                    assigned_generators = best_solution[0]
+                    opened_generators = best_solution[1]
+            current_temp -= alpha
+            print(self.getCost(best_solution[0], best_solution[1]))
 
         self.printSolution(assigned_generators, opened_generators)
+    
+    def getCost(self, assigned_generators, opened_generators) :
+        return self.instance.get_solution_cost(assigned_generators, opened_generators)
     
     def selectNeighbors(self, neighbors, generator, countGenerator):
         bestNeighbors = {}
