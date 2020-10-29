@@ -32,48 +32,7 @@ class Solve:
 
             assigned_generators[i] = closest_generator
 
-        self.instance.solution_checker(assigned_generators, opened_generators)
-        total_cost = self.instance.get_solution_cost(assigned_generators, opened_generators)
-        self.instance.plot_solution(assigned_generators, opened_generators, "naive")
-
-        print("[ASSIGNED-GENERATOR]", assigned_generators)
-        print("[OPENED-GENERATOR]", opened_generators)
-        print("[SOLUTION-COST]", total_cost)
-
-
-    def getDistance(self, i, j) :
-        return self.instance.get_distance(self.instance.device_coordinates[i][0],
-                    self.instance.device_coordinates[i][1],
-                    self.instance.generator_coordinates[j][0],
-                    self.instance.generator_coordinates[j][1])
-
-    def getZone(self, id, type):
-        coordinates = (0,0)
-        if type == 1 :
-            coordinates = self.instance.generator_coordinates[id]
-        elif type == 2 :
-            coordinates = self.instance.device_coordinates[id]
-        if (coordinates[0] >= 0 and 
-            coordinates[0] <=  50 and
-            coordinates[1] >= 50 and
-            coordinates[1] <= 100) :
-            return 1
-        elif (coordinates[0] >= 50 and
-        coordinates[0] <=  100 and
-        coordinates[1] >= 50 and
-        coordinates[1] <= 100) :
-            return 2
-        elif (coordinates[0] >= 0 and 
-        coordinates[0] <=  50 and
-        coordinates[1] >= 0 and
-        coordinates[1] <= 100) :
-            return 3
-        elif (coordinates[0] >= 50 and 
-        coordinates[0] <=  100 and
-        coordinates[1] >= 0 and
-        coordinates[1] <= 50) :
-            return 4
-
+        self.printSolution(assigned_generators, opened_generators)
 
     def solve_localSearch(self):
         print("Solve with a local search algorithm")
@@ -108,6 +67,14 @@ class Solve:
             min_cost_gen = min(costs[zone], key=costs[zone].get)
             assigned_generators[i] = min_cost_gen
             opened_generators[min_cost_gen] = 1
+
+        best_solution = assigned_generators, opened_generators
+        print(best_solution)
+
+        #t = t0
+        t = 10
+
+        
             
 
         # g = random.randint(0, self.n_generator-1)
@@ -151,6 +118,9 @@ class Solve:
         #         opened_generators[device_generator[1]] = 1
             
 
+        self.printSolution(assigned_generators, opened_generators)
+
+    def printSolution(self, assigned_generators, opened_generators) :
         self.instance.solution_checker(assigned_generators, opened_generators)
         total_cost = self.instance.get_solution_cost(assigned_generators, opened_generators)
         self.instance.plot_solution(assigned_generators, opened_generators, "local_search")
@@ -158,6 +128,41 @@ class Solve:
         print("[ASSIGNED-GENERATOR]", assigned_generators)
         print("[OPENED-GENERATOR]", opened_generators)
         print("[SOLUTION-COST]", total_cost)
+
+    def getDistance(self, i, j) :
+        return self.instance.get_distance(self.instance.device_coordinates[i][0],
+                    self.instance.device_coordinates[i][1],
+                    self.instance.generator_coordinates[j][0],
+                    self.instance.generator_coordinates[j][1])
+
+    def getZone(self, id, type):
+        coordinates = (0,0)
+        if type == 1 :
+            coordinates = self.instance.generator_coordinates[id]
+        elif type == 2 :
+            coordinates = self.instance.device_coordinates[id]
+        if (coordinates[0] >= 0 and 
+            coordinates[0] <=  50 and
+            coordinates[1] >= 50 and
+            coordinates[1] <= 100) :
+            return 1
+        elif (coordinates[0] >= 50 and
+        coordinates[0] <=  100 and
+        coordinates[1] >= 50 and
+        coordinates[1] <= 100) :
+            return 2
+        elif (coordinates[0] >= 0 and 
+        coordinates[0] <=  50 and
+        coordinates[1] >= 0 and
+        coordinates[1] <= 100) :
+            return 3
+        elif (coordinates[0] >= 50 and 
+        coordinates[0] <=  100 and
+        coordinates[1] >= 0 and
+        coordinates[1] <= 50) :
+            return 4
+
+
 
 
 
