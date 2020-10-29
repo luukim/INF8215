@@ -87,8 +87,6 @@ class Solve:
         zone3 = {}
         zone4 = {}
 
-
-        # print(self.instance.generator_coordinates)
         for generator in generators :
             zone = self.getZone(generator, 1)
             if zone == 1 :
@@ -100,33 +98,15 @@ class Solve:
             elif zone == 4 :
                 zone4[generator] = self.instance.opening_cost[generator]
 
-
         costs[1] = zone1
         costs[2] = zone2
         costs[3] = zone3
         costs[4] = zone4
 
-            
-
-        print(zone1)
         for i in range(self.n_device):
             zone = self.getZone(i,2)
-            tempCost = costs.copy()
-            min_cost_gen = -1
-            if zone == 1 :
-                # for cost in tempCost[zone1] :
-                #     cost += self.getDistance(i,cost)
-                min_cost_gen = min(zone1, key=zone1.get)
-                assigned_generators[i] = min_cost_gen
-            elif zone == 2 :
-                min_cost_gen = min(zone2, key=zone2.get)
-                assigned_generators[i] = min_cost_gen
-            elif zone == 3 :
-                min_cost_gen = min(zone3, key=zone3.get)
-                assigned_generators[i] = min_cost_gen
-            elif zone == 4 :
-                min_cost_gen = min(zone4, key=zone4.get)
-                assigned_generators[i] = min_cost_gen
+            min_cost_gen = min(costs[zone], key=costs[zone].get)
+            assigned_generators[i] = min_cost_gen
             opened_generators[min_cost_gen] = 1
             
 
