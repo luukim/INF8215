@@ -68,8 +68,9 @@ class Solve:
             assigned_generators[i] = min_cost_gen
             opened_generators[min_cost_gen] = 1
 
+        solutions_found = {} #pour stocker toutes les solutions trouvées et retourner à une meilleure précédente si nécessaire
         best_solution = assigned_generators, opened_generators
-        print(best_solution)
+        solutions_found[1] = best_solution
 
         #t = t0
         t = 10
