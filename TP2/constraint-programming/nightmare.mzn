@@ -11,6 +11,9 @@ array[1..n] of int: down_vision = [3,4,2,1,2];
 % Variable: value for each cell
 array[1..n,1..n] of var 1..n: city;
 
+constraint forall(i in 1..n)(alldifferent(row(city,i)));
+constraint forall(i in 1..n)(alldifferent(col(city,i)));
+
 output
 ["city:"]++
 [
