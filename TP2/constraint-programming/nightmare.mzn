@@ -18,6 +18,16 @@ constraint forall(i in 1..n)(if right_vision[i] = 1 then city[5,i] = 5 endif);
 constraint forall(i in 1..n)(if up_vision[i] = 1 then city[i,1] = 5 endif);
 constraint forall(i in 1..n)(if down_vision[i] = 1 then city[i,5] = 5 endif);
 
+constraint forall(i in 1..n)(if left_vision[i] = 4 \/ left_vision[i] = 3 then city[1,i] != 4 /\ city[1,i] != 5 endif);
+constraint forall(i in 1..n)(if right_vision[i] = 4 \/ right_vision[i] = 3 then city[5,i] != 4 /\ city[5,i] != 5 endif);
+constraint forall(i in 1..n)(if up_vision[i] = 4 \/ up_vision[i] = 3 then city[i,1] != 4 /\ city[i,1] != 5 endif);
+constraint forall(i in 1..n)(if down_vision[i] = 4 \/ down_vision[i] = 3 then city[i,5] != 4 /\ city[i,5] != 5 endif);
+
+constraint forall(i in 1..n)(if down_vision[i] = 4 then city[i,4] != 4 endif);
+constraint forall(i in 1..n)(if right_vision[i] = 4 then city[4,i] != 4 endif);
+
+constraint forall(i in 1..n-1, j in 1..n-1)(if city[i+1,j] = 5 /\ city[i,j+1] = 5 /\ i = 1 then city[i,j] != 4 endif);
+
 output
 ["city:"]++
 [
