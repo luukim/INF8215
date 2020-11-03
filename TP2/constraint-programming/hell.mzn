@@ -1,3 +1,4 @@
+%Use solver configuration : Chuffed 0.10.4
 include "globals.mzn";
 
 int: n_object;
@@ -12,10 +13,7 @@ var int: length_used;
 var int: width_used;
 var int: area = (X[arg_max(X)] + shape[arg_max(X), 1])*(Y[arg_max(Y)] + shape[arg_max(Y), 2]);
 
-function int: no_overlap_x(int: x1, int:x2) = x1 - x2;
 
-
-constraint forall(i in 1..n_object)(shape[i,1] <= max_length /\ shape[i,1] <= max_width);
 % non overlap
 constraint forall(i in 1..n_object, j in 1..n_object where i < j)
                  (X[i] + shape[i,1] <= X[j] \/
