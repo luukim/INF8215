@@ -6,8 +6,8 @@ array[1..n_object,1..2] of int: shape; % (x,y) shape of each object
 int: max_length;
 int: max_width;
 
-array[1..n_object] of var 0..max_length: X; %origin of shape x
-array[1..n_object] of var 0..max_width: Y; %origin of shape y
+array[1..n_object] of var 0..max_length: X; %origin of shape x (lower left coordinate)
+array[1..n_object] of var 0..max_width: Y; %origin of shape y (lower left coordinate)
 
 var int: length_used;
 var int: width_used;

@@ -13,6 +13,7 @@ array[1..n,1..n] of var 1..n: city;
 
 constraint forall(i in 1..n)(alldifferent(row(city,i)));
 constraint forall(i in 1..n)(alldifferent(col(city,i)));
+
 constraint forall(i in 1..n)(if left_vision[i] = 1 then city[1,i] = 5 endif);
 constraint forall(i in 1..n)(if right_vision[i] = 1 then city[5,i] = 5 endif);
 constraint forall(i in 1..n)(if up_vision[i] = 1 then city[i,1] = 5 endif);
