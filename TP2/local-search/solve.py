@@ -62,7 +62,7 @@ class Solve:
                 maxOpeningCost = sorted(self.instance.opening_cost)[-index]
                 generator = self.instance.opening_cost.index(maxOpeningCost)
                 countGenerator = assigned_generators.count(generator)
-                if countGenerator:
+                if countGenerator == 1:
                     banned_generators.append(generator)
                 index += 1
 
@@ -73,23 +73,19 @@ class Solve:
                 best_solution = best_neighbor[0], best_neighbor[1]
                 assigned_generators = best_solution[0]
                 opened_generators = best_solution[1]
-            print(self.instance.get_solution_cost(best_solution[0], best_solution[1]))
 
         self.printSolution(assigned_generators, opened_generators)
     
     def selectNeighbors(self, neighbors, generator, countGenerator):
-        #print("generator ", generator)
         bestNeighbors = {}
         for key in neighbors:
             if neighbors[key][0].count(generator) < countGenerator:
                 bestNeighbors[self.instance.opening_cost[generator]] = neighbors[key]
-        #print(bestNeighbors)
         return bestNeighbors
 
     def getNeighbors(self, assigned_generators, opened_generators, banned_generators) :
         neighbors = {}
         for i in range(self.n_device) :
-
             for j in range(self.n_generator) :
                 opened_generators_temp = list(opened_generators)
                 assigned_generators_temp = list(assigned_generators)
